@@ -2,6 +2,7 @@
 
 import { useEditor, EditorContent, Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { parseContent } from '@/lib/content';
 
 interface RichTextEditorProps {
   content?: string;
@@ -102,15 +103,6 @@ function Toolbar({ editor }: { editor: Editor }) {
       </ToolbarButton>
     </div>
   );
-}
-
-function parseContent(content?: string): object | string {
-  if (!content) return '';
-  try {
-    return JSON.parse(content);
-  } catch {
-    return content;
-  }
 }
 
 export function RichTextEditor({ content, onUpdate }: RichTextEditorProps) {

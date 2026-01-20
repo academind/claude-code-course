@@ -3,14 +3,9 @@
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { nanoid } from 'nanoid';
-import { z } from 'zod';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
-
-const toggleSharingSchema = z.object({
-  noteId: z.string(),
-  enable: z.enum(['true', 'false']).transform((v) => v === 'true'),
-});
+import { toggleSharingSchema } from '@/lib/validation';
 
 export async function deleteNote(formData: FormData): Promise<void> {
   const session = await auth.api.getSession({

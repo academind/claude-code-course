@@ -4,14 +4,9 @@ import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { z } from 'zod';
 import DOMPurify from 'isomorphic-dompurify';
 import { sanitizeContent } from '@/lib/sanitize';
-
-const createNoteSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(200, 'Title is too long'),
-  content_json: z.string().min(1, 'Content is required'),
-});
+import { createNoteSchema } from '@/lib/validation';
 
 export type ActionResult = {
   success?: boolean;
