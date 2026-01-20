@@ -27,7 +27,7 @@ function AuthForm() {
             callbackURL: "/dashboard",
           });
           if (result.error) {
-            return { error: result.error.message || "Signup failed" };
+            return { error: "Unable to create account. Please try again." };
           }
         } else {
           const result = await signIn.email({
@@ -36,7 +36,7 @@ function AuthForm() {
             callbackURL: "/dashboard",
           });
           if (result.error) {
-            return { error: result.error.message || "Login failed" };
+            return { error: "Invalid email or password." };
           }
         }
       } catch {
@@ -65,7 +65,7 @@ function AuthForm() {
             type="email"
             required
             autoComplete="email"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -80,7 +80,7 @@ function AuthForm() {
             required
             minLength={8}
             autoComplete={mode === "signup" ? "new-password" : "current-password"}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -99,7 +99,7 @@ function AuthForm() {
         </button>
       </form>
 
-      <p className="text-center mt-4 text-sm text-gray-600">
+      <p className="text-center mt-4 text-sm text-foreground/60">
         {mode === "signup" ? (
           <>
             Already have an account?{" "}

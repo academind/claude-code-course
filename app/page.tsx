@@ -5,7 +5,7 @@ export default function Home() {
     <div className="flex min-h-screen items-center justify-center p-8">
       <main className="max-w-md text-center">
         <h1 className="text-4xl font-bold mb-4">Welcome to Notes</h1>
-        <p className="text-gray-600 mb-8">
+        <p className="text-foreground/60 mb-8">
           A simple note-taking app with rich text editing and public sharing.
         </p>
         <div className="flex gap-4 justify-center">
@@ -17,7 +17,7 @@ export default function Home() {
           </Link>
           <Link
             href="/authenticate"
-            className="px-6 py-2 border border-black rounded-lg hover:bg-gray-100"
+            className="px-6 py-2 border border-foreground rounded-lg hover:bg-foreground/10"
           >
             Sign up
           </Link>

@@ -1,6 +1,7 @@
 import { Database } from "bun:sqlite";
 
-const db = new Database("data/app.db");
+const dbPath = process.env.DB_PATH || "data/app.db";
+const db = new Database(dbPath);
 
 // Enable WAL mode for better concurrency
 db.run("PRAGMA journal_mode = WAL;");
@@ -82,5 +83,14 @@ db.run(`
 db.run(`CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)`);
 db.run(`CREATE INDEX IF NOT EXISTS idx_notes_public_slug ON notes(public_slug)`);
 db.run(`CREATE INDEX IF NOT EXISTS idx_notes_is_public ON notes(is_public)`);
+
+// Auto-update updated_at column on notes update
+db.run(`
+  CREATE TRIGGER IF NOT EXISTS update_notes_timestamp
+  AFTER UPDATE ON notes
+  BEGIN
+    UPDATE notes SET updated_at = datetime('now') WHERE id = NEW.id;
+  END
+`);
 
 export { db };
