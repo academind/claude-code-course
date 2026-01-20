@@ -116,7 +116,7 @@ export function RichTextEditor({ content, onUpdate }: RichTextEditorProps) {
     editorProps: {
       attributes: {
         class:
-          'min-h-[200px] p-4 border border-border rounded-t-none rounded-b-lg focus:outline-none focus:ring-2 focus:ring-blue-500',
+          'min-h-[200px] p-4 border border-border rounded-t-none rounded-b-lg focus:outline-none focus:ring-2 focus:ring-purple-500',
       },
     },
   });

@@ -74,7 +74,7 @@ export function ShareToggle({ noteId, initialIsPublic, initialSlug }: ShareToggl
           <button
             type='button'
             onClick={copyToClipboard}
-            className='px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors'
+            className='px-4 py-2 bg-purple-600 text-white rounded text-sm hover:bg-purple-700 transition-colors'
           >
             {copied ? 'Copied!' : 'Copy'}
           </button>

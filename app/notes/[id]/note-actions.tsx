@@ -16,7 +16,7 @@ export function NoteActions({ noteId }: NoteActionsProps) {
       <div className='flex gap-2'>
         <Link
           href={`/notes/${noteId}/edit`}
-          className='px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700'
+          className='px-4 py-2 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700'
         >
           Edit
         </Link>
