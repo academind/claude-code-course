@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useEffect } from 'react';
 import { toggleSharing } from '@/app/notes/[id]/actions';
 
 interface ShareToggleProps {
@@ -17,11 +17,16 @@ export function ShareToggle({ noteId, initialIsPublic, initialSlug }: ShareToggl
   });
 
   const [copied, setCopied] = useState(false);
+  const [origin, setOrigin] = useState('');
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   const isPublic = state.isPublic ?? initialIsPublic;
   const slug = state.slug ?? initialSlug;
 
-  const publicUrl = slug ? `${window.location.origin}/p/${slug}` : null;
+  const publicUrl = slug && origin ? `${origin}/p/${slug}` : null;
 
   async function copyToClipboard() {
     if (!publicUrl) return;

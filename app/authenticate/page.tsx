@@ -24,11 +24,11 @@ function AuthForm() {
             email,
             password,
             name: email,
-            callbackURL: '/dashboard',
           });
           if (result.error) {
             return { error: 'Unable to create account. Please try again.' };
           }
+          window.location.href = '/dashboard';
         } else {
           const result = await signIn.email({
             email,
