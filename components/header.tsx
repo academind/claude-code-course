@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { signOut } from "@/lib/auth-client";
+import Link from 'next/link';
+import { signOut } from '@/lib/auth-client';
 
 interface HeaderProps {
   user?: {
@@ -13,8 +13,8 @@ interface HeaderProps {
 
 export function Header({ user }: HeaderProps) {
   return (
-    <header className="sticky top-0 bg-background border-b border-border px-6 py-4 flex items-center justify-between">
-      <Link href="/dashboard" className="text-xl font-bold">
+    <header className='sticky top-0 bg-background border-b border-border px-6 py-4 flex items-center justify-between'>
+      <Link href='/dashboard' className='text-xl font-bold'>
         NextNotes
       </Link>
       {user && (
@@ -23,12 +23,12 @@ export function Header({ user }: HeaderProps) {
             signOut({
               fetchOptions: {
                 onSuccess: () => {
-                  window.location.href = "/";
+                  window.location.href = '/';
                 },
               },
             })
           }
-          className="text-sm text-foreground/60 hover:text-foreground cursor-pointer"
+          className='text-sm text-foreground/60 hover:text-foreground cursor-pointer'
         >
           Logout
         </button>

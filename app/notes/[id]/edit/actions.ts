@@ -8,7 +8,8 @@ import { z } from 'zod';
 import DOMPurify from 'isomorphic-dompurify';
 import { sanitizeContent } from '@/lib/sanitize';
 
-const createNoteSchema = z.object({
+const updateNoteSchema = z.object({
+  id: z.string().uuid('Invalid note ID'),
   title: z.string().min(1, 'Title is required').max(200, 'Title is too long'),
   content_json: z.string().min(1, 'Content is required'),
 });
@@ -16,13 +17,14 @@ const createNoteSchema = z.object({
 export type ActionResult = {
   success?: boolean;
   error?: {
+    id?: string[];
     title?: string[];
     content_json?: string[];
     general?: string;
   };
 };
 
-export async function createNote(formData: FormData): Promise<ActionResult> {
+export async function updateNote(formData: FormData): Promise<ActionResult> {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -31,7 +33,8 @@ export async function createNote(formData: FormData): Promise<ActionResult> {
     redirect('/authenticate');
   }
 
-  const result = createNoteSchema.safeParse({
+  const result = updateNoteSchema.safeParse({
+    id: formData.get('id'),
     title: formData.get('title'),
     content_json: formData.get('content_json'),
   });
@@ -40,20 +43,21 @@ export async function createNote(formData: FormData): Promise<ActionResult> {
     return { error: result.error.flatten().fieldErrors };
   }
 
-  const { title, content_json } = result.data;
+  const { id, title, content_json } = result.data;
   const sanitizedTitle = DOMPurify.sanitize(title, { ALLOWED_TAGS: [] });
   const sanitizedContent = sanitizeContent(content_json);
-  const id = crypto.randomUUID();
 
   try {
-    db.run(`INSERT INTO notes (id, user_id, title, content_json) VALUES (?, ?, ?, ?)`, [
-      id,
-      session.user.id,
-      sanitizedTitle,
-      sanitizedContent,
-    ]);
+    const changes = db.run(
+      'UPDATE notes SET title = ?, content_json = ? WHERE id = ? AND user_id = ?',
+      [sanitizedTitle, sanitizedContent, id, session.user.id],
+    );
+
+    if (changes.changes === 0) {
+      return { error: { general: 'Note not found or access denied.' } };
+    }
   } catch {
-    return { error: { general: 'Failed to create note. Please try again.' } };
+    return { error: { general: 'Failed to update note. Please try again.' } };
   }
 
   redirect(`/notes/${id}`);

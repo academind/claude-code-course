@@ -142,12 +142,7 @@ Instead, you can tell React that each user's profile is conceptually a different
 
 ```jsx
 export default function ProfilePage({ userId }) {
-  return (
-    <Profile
-      userId={userId}
-      key={userId}
-    />
-  );
+  return <Profile userId={userId} key={userId} />;
 }
 
 function Profile({ userId }) {
@@ -201,7 +196,7 @@ function List({ items }) {
 
 Storing information from previous renders like this can be hard to understand, but it's better than updating the same state in an Effect. In the above example, `setSelection` is called directly during a render. React will re-render the `List` immediately after it exits with a `return` statement. React has not rendered the `List` children or updated the DOM yet, so this lets the `List` children skip rendering the stale `selection` value.
 
-When you update a component during rendering, React throws away the returned JSX and immediately retries rendering. To avoid very slow cascading retries, React only lets you update the *same* component's state during a render. If you update another component's state during a render, you'll see an error. A condition like `items !== prevItems` is necessary to avoid loops. You may adjust state like this, but any other side effects (like changing the DOM or setting timeouts) should stay in event handlers or Effects to keep components pure.
+When you update a component during rendering, React throws away the returned JSX and immediately retries rendering. To avoid very slow cascading retries, React only lets you update the _same_ component's state during a render. If you update another component's state during a render, you'll see an error. A condition like `items !== prevItems` is necessary to avoid loops. You may adjust state like this, but any other side effects (like changing the DOM or setting timeouts) should stay in event handlers or Effects to keep components pure.
 
 Although this pattern is more efficient than an Effect, most components shouldn't need it either. No matter how you do it, adjusting state based on props or other state makes your data flow more difficult to understand and debug. Always check whether you can reset all state with a key or calculate everything during rendering instead. For example, instead of storing (and resetting) the selected item, you can store the selected item ID:
 
@@ -210,7 +205,7 @@ function List({ items }) {
   const [isReverse, setIsReverse] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   // ✅ Best: Calculate everything during rendering
-  const selection = items.find(item => item.id === selectedId) ?? null;
+  const selection = items.find((item) => item.id === selectedId) ?? null;
   // ...
 }
 ```
@@ -244,7 +239,7 @@ function ProductPage({ product, addToCart }) {
 
 This Effect is unnecessary. It will also most likely cause bugs. For example, let's say that your app "remembers" the shopping cart between the page reloads. If you add a product to the cart once and refresh the page, the notification will appear again. It will keep appearing every time you refresh that product's page. This is because `product.isInCart` will already be `true` on the page load, so the Effect above will call `showNotification()`.
 
-**When you're not sure whether some code should be in an Effect or in an event handler, ask yourself *why* this code needs to run. Use Effects only for code that should run because the component was displayed to the user.** In this example, the notification should appear because the user pressed the button, not because the page was displayed! Delete the Effect and put the shared logic into a function called from both event handlers:
+**When you're not sure whether some code should be in an Effect or in an event handler, ask yourself _why_ this code needs to run. Use Effects only for code that should run because the component was displayed to the user.** In this example, the notification should appear because the user pressed the button, not because the page was displayed! Delete the Effect and put the shared logic into a function called from both event handlers:
 
 ```jsx
 function ProductPage({ product, addToCart }) {
@@ -300,9 +295,9 @@ function Form() {
 
 Let's apply the same criteria as in the example before.
 
-The analytics POST request should remain in an Effect. This is because the *reason* to send the analytics event is that the form was displayed. (It would fire twice in development, but see here for how to deal with that.)
+The analytics POST request should remain in an Effect. This is because the _reason_ to send the analytics event is that the form was displayed. (It would fire twice in development, but see here for how to deal with that.)
 
-However, the `/api/register` POST request is not caused by the form being *displayed*. You only want to send the request at one specific moment in time: when the user presses the button. It should only ever happen on that particular interaction. Delete the second Effect and move that POST request into the event handler:
+However, the `/api/register` POST request is not caused by the form being _displayed_. You only want to send the request at one specific moment in time: when the user presses the button. It should only ever happen on that particular interaction. Delete the second Effect and move that POST request into the event handler:
 
 ```jsx
 function Form() {
@@ -323,7 +318,7 @@ function Form() {
 }
 ```
 
-When you choose whether to put some logic into an event handler or an Effect, the main question you need to answer is *what kind of logic* it is from the user's perspective. If this logic is caused by a particular interaction, keep it in the event handler. If it's caused by the user *seeing* the component on the screen, keep it in the Effect.
+When you choose whether to put some logic into an event handler or an Effect, the main question you need to answer is _what kind of logic_ it is from the user's perspective. If this logic is caused by a particular interaction, keep it in the event handler. If it's caused by the user _seeing_ the component on the screen, keep it in the Effect.
 
 ## Chains of computations
 
@@ -339,13 +334,13 @@ function Game() {
   // 🔴 Avoid: Chains of Effects that adjust the state solely to trigger each other
   useEffect(() => {
     if (card !== null && card.gold) {
-      setGoldCardCount(c => c + 1);
+      setGoldCardCount((c) => c + 1);
     }
   }, [card]);
 
   useEffect(() => {
     if (goldCardCount > 3) {
-      setRound(r => r + 1)
+      setRound((r) => r + 1);
       setGoldCardCount(0);
     }
   }, [goldCardCount]);
@@ -417,7 +412,7 @@ This is a lot more efficient. Also, if you implement a way to view game history,
 
 Remember that inside event handlers, state behaves like a snapshot. For example, even after you call `setRound(round + 1)`, the `round` variable will reflect the value at the time the user clicked the button. If you need to use the next value for calculations, define it manually like `const nextRound = round + 1`.
 
-In some cases, you *can't* calculate the next state directly in the event handler. For example, imagine a form with multiple dropdowns where the options of the next dropdown depend on the selected value of the previous dropdown. Then, a chain of Effects is appropriate because you are synchronizing with network.
+In some cases, you _can't_ calculate the next state directly in the event handler. For example, imagine a form with multiple dropdowns where the options of the next dropdown depend on the selected value of the previous dropdown. Then, a chain of Effects is appropriate because you are synchronizing with network.
 
 ## Initializing the application
 
@@ -438,7 +433,7 @@ function App() {
 
 However, you'll quickly discover that it runs twice in development. This can cause issues—for example, maybe it invalidates the authentication token because the function wasn't designed to be called twice. In general, your components should be resilient to being remounted. This includes your top-level `App` component.
 
-Although it may not ever get remounted in practice in production, following the same constraints in all components makes it easier to move and reuse code. If some logic must run once per *app load* rather than once per *component mount*, add a top-level variable to track whether it has already executed:
+Although it may not ever get remounted in practice in production, following the same constraints in all components makes it easier to move and reuse code. If some logic must run once per _app load_ rather than once per _component mount_, add a top-level variable to track whether it has already executed:
 
 ```jsx
 let didInit = false;
@@ -459,8 +454,9 @@ function App() {
 You can also run it during module initialization and before the app renders:
 
 ```jsx
-if (typeof window !== 'undefined') { // Check if we're running in the browser.
-   // ✅ Only runs once per app load
+if (typeof window !== 'undefined') {
+  // Check if we're running in the browser.
+  // ✅ Only runs once per app load
   checkAuthToken();
   loadDataFromLocalStorage();
 }
@@ -483,7 +479,7 @@ function Toggle({ onChange }) {
   // 🔴 Avoid: The onChange handler runs too late
   useEffect(() => {
     onChange(isOn);
-  }, [isOn, onChange])
+  }, [isOn, onChange]);
 
   function handleClick() {
     setIsOn(!isOn);
@@ -579,7 +575,7 @@ function Child({ onFetched }) {
 }
 ```
 
-In React, data flows from the parent components to their children. When you see something wrong on the screen, you can trace where the information comes from by going up the component chain until you find which component passes the wrong prop or has the wrong state. When child components update the state of their parent components in Effects, the data flow becomes very difficult to trace. Since both the child and the parent need the same data, let the parent component fetch that data, and *pass it down* to the child instead:
+In React, data flows from the parent components to their children. When you see something wrong on the screen, you can trace where the information comes from by going up the component chain until you find which component passes the wrong prop or has the wrong state. When child components update the state of their parent components in Effects, the data flow becomes very difficult to trace. Since both the child and the parent need the same data, let the parent component fetch that data, and _pass it down_ to the child instead:
 
 ```jsx
 function Parent() {
@@ -646,7 +642,7 @@ function useOnlineStatus() {
   return useSyncExternalStore(
     subscribe, // React won't resubscribe for as long as you pass the same function
     () => navigator.onLine, // How to get the value on the client
-    () => true // How to get the value on the server
+    () => true, // How to get the value on the server
   );
 }
 
@@ -669,7 +665,7 @@ function SearchResults({ query }) {
 
   useEffect(() => {
     // 🔴 Avoid: Fetching without cleanup logic
-    fetchResults(query, page).then(json => {
+    fetchResults(query, page).then((json) => {
       setResults(json);
     });
   }, [query, page]);
@@ -683,7 +679,7 @@ function SearchResults({ query }) {
 
 You don't need to move this fetch to an event handler.
 
-This might seem like a contradiction with the earlier examples where you needed to put the logic into the event handlers! However, consider that it's not the *typing event* that's the main reason to fetch. Search inputs are often prepopulated from the URL, and the user might navigate Back and Forward without touching the input.
+This might seem like a contradiction with the earlier examples where you needed to put the logic into the event handlers! However, consider that it's not the _typing event_ that's the main reason to fetch. Search inputs are often prepopulated from the URL, and the user might navigate Back and Forward without touching the input.
 
 It doesn't matter where `page` and `query` come from. While this component is visible, you want to keep `results` synchronized with data from the network for the current `page` and `query`. This is why it's an Effect.
 
@@ -697,7 +693,7 @@ function SearchResults({ query }) {
   const [page, setPage] = useState(1);
   useEffect(() => {
     let ignore = false;
-    fetchResults(query, page).then(json => {
+    fetchResults(query, page).then((json) => {
       if (!ignore) {
         setResults(json);
       }
@@ -739,8 +735,8 @@ function useData(url) {
   useEffect(() => {
     let ignore = false;
     fetch(url)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (!ignore) {
           setData(json);
         }
@@ -763,7 +759,7 @@ In general, whenever you have to resort to writing Effects, keep an eye out for 
 - To cache expensive calculations, add `useMemo` instead of `useEffect`.
 - To reset the state of an entire component tree, pass a different `key` to it.
 - To reset a particular bit of state in response to a prop change, set it during rendering.
-- Code that runs because a component was *displayed* should be in Effects, the rest should be in events.
+- Code that runs because a component was _displayed_ should be in Effects, the rest should be in events.
 - If you need to update the state of several components, it's better to do it during a single event.
 - Whenever you try to synchronize state variables in different components, consider lifting state up.
 - You can fetch data with Effects, but you need to implement cleanup to avoid race conditions.

@@ -21,16 +21,19 @@ bun start        # Start production server
 ## Architecture
 
 This is a Next.js 16 application using the App Router pattern with:
+
 - **Package Manager**: Bun (bun.lock present)
 - **TypeScript**: Strict mode enabled
 - **Styling**: Tailwind CSS 4 with PostCSS
 - **React**: Version 19
 
 ### Key Dependencies
+
 - `@tiptap/*` - Rich text editor components
 - `better-auth` - Authentication library
 - `zod` - Schema validation
 
 ### Project Structure
+
 - `app/` - Next.js App Router pages and layouts
 - `@/*` path alias maps to project root

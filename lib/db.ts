@@ -1,11 +1,11 @@
-import { Database } from "bun:sqlite";
+import { Database } from 'bun:sqlite';
 
-const dbPath = process.env.DB_PATH || "data/app.db";
+const dbPath = process.env.DB_PATH || 'data/app.db';
 const db = new Database(dbPath);
 
 // Enable WAL mode for better concurrency
-db.run("PRAGMA journal_mode = WAL;");
-db.run("PRAGMA foreign_keys = ON;");
+db.run('PRAGMA journal_mode = WAL;');
+db.run('PRAGMA foreign_keys = ON;');
 
 // Create better-auth tables
 db.run(`

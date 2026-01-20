@@ -21,6 +21,7 @@ When given one or more technologies/libraries to look up:
 ### Step 1: Context7 MCP (Primary)
 
 For each library, call these in sequence:
+
 1. `mcp_Context7_resolve-library-id` with the library name to get the Context7 ID
 2. `mcp_Context7_query-docs` with the resolved ID and specific query
 

@@ -3,7 +3,6 @@ name: web-security
 description: Enforce web security and avoid security vulnerabilities
 ---
 
-
 # Web Security
 
 We treat **web security as a core requirement**, not an afterthought.
