@@ -16,7 +16,7 @@ export default function Home() {
             Log in
           </Link>
           <Link
-            href='/authenticate'
+            href='/authenticate?mode=signup'
             className='px-6 py-2 border border-foreground rounded-lg hover:bg-foreground/10'
           >
             Sign up
