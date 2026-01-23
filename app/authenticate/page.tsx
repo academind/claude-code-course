@@ -65,7 +65,7 @@ function AuthForm() {
             type='email'
             required
             autoComplete='email'
-            className='w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500'
           />
         </div>
 
@@ -80,7 +80,7 @@ function AuthForm() {
             required
             minLength={8}
             autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
-            className='w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500'
           />
         </div>
 
@@ -93,7 +93,7 @@ function AuthForm() {
         <button
           type='submit'
           disabled={isPending}
-          className='w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed'
+          className='w-full py-2 px-4 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed'
         >
           {isPending ? 'Loading...' : mode === 'signup' ? 'Sign Up' : 'Sign In'}
         </button>
@@ -103,14 +103,14 @@ function AuthForm() {
         {mode === 'signup' ? (
           <>
             Already have an account?{' '}
-            <Link href='/authenticate?mode=login' className='text-blue-600 hover:underline'>
+            <Link href='/authenticate?mode=login' className='text-purple-600 hover:underline'>
               Sign in
             </Link>
           </>
         ) : (
           <>
             Don&apos;t have an account?{' '}
-            <Link href='/authenticate?mode=signup' className='text-blue-600 hover:underline'>
+            <Link href='/authenticate?mode=signup' className='text-purple-600 hover:underline'>
               Sign up
             </Link>
           </>

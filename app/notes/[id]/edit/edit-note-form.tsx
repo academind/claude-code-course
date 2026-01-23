@@ -45,7 +45,7 @@ export function EditNoteForm({ note }: EditNoteFormProps) {
           name='title'
           required
           defaultValue={note.title}
-          className='w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+          className='w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500'
           placeholder='Enter note title...'
         />
         {state?.error?.title && <p className='mt-1 text-sm text-red-600'>{state.error.title[0]}</p>}
@@ -67,7 +67,7 @@ export function EditNoteForm({ note }: EditNoteFormProps) {
       <button
         type='submit'
         disabled={isPending}
-        className='bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed'
+        className='bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed'
       >
         {isPending ? 'Saving...' : 'Save Changes'}
       </button>

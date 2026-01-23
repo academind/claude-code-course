@@ -37,7 +37,7 @@ export default async function EditNotePage({ params }: { params: Params }) {
 
   return (
     <div className='p-8 max-w-3xl mx-auto'>
-      <Link href={`/notes/${id}`} className='text-blue-600 hover:underline mb-4 inline-block'>
+      <Link href={`/notes/${id}`} className='text-purple-600 hover:underline mb-4 inline-block'>
         &larr; Back to Note
       </Link>
 
