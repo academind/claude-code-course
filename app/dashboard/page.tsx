@@ -32,7 +32,7 @@ export default async function Dashboard() {
         <h1 className='text-2xl font-bold'>Dashboard</h1>
         <Link
           href='/notes/new'
-          className='bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700'
+          className='bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover'
         >
           New Note
         </Link>
